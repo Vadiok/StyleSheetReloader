@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head lang="ru">
+	<meta charset="UTF-8">
+	<title>StyleSheetReloader Testing Page</title>
+	<link rel="stylesheet" href="main.css"/>
+	<link rel="stylesheet" href="alt_r.css"/>
+	<link rel="stylesheet" href="ctrl_y.css"/>
+</head>
+<body>
+	<div class="all">Test all styles (Alt+R)</div>
+	<div class="all">Test all styles (Alt+E)</div>
+	<div class="alt_r">Alt+Y testing</div>
+	<div class="ctrl_y">Ctrl+Y testing</div>
+	<script src="../dist/stylesheet_reloader.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		StyleSheetReloader();
+		StyleSheetReloader({hotKey:'alt+e'});
+		StyleSheetReloader({'cssUrl':'alt_r.css',hotKey:'alt+r'});
+		StyleSheetReloader({hotKey:'ctrl+y','cssUrl':'ctrl_y.css'});
+	</script>
+</body>
+</html>

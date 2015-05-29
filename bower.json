@@ -1,0 +1,16 @@
+{
+	"name": "StyleSheetReloader",
+	"version": "0.5.0",
+	"authors": [
+		"Vlad Tokarev <vlad@tokarev.tk>"
+	],
+	"license": "GPL-3.0+",
+	"ignore": [
+		"**/.*",
+		"node_modules",
+		"bower_components",
+		"test",
+		"tests"
+	],
+	"dependencies": {}
+}

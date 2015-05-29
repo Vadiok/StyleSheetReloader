@@ -2,7 +2,7 @@
 	StyleSheetReloader v 0.5
 	Author: Vlad Tokarev <vlad@tokarev.tk>
 ###
-StyleSheetReloader = (options)->
+window.StyleSheetReloader = (options)->
 	defaultOptions = {
 		cssUrl: false
 		,hotKey: 'alt+r'
