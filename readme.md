@@ -1,6 +1,11 @@
 # StyleSheetReloader
 Simple JavaScript function uses to refresh CSS styles without page reloading.
 
+## Installation
+```
+bower install git://github.com/Vadiok/StyleSheetReloader.git
+```
+
 ## Usage
 ```js
 // Reloads all stylesheet files on Alt+R (default HotKey)
