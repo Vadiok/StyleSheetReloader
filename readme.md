@@ -2,10 +2,11 @@
 Simple JavaScript function uses to refresh CSS styles without page reloading.
 
 ## Installation
+By Bower usage:
 ```
 bower i git://github.com/Vadiok/StyleSheetReloader.git
 ```
-Or just download [zip archive](https://github.com/Vadiok/StyleSheetReloader/archive/master.zip)
+By simple downloading of [zip archive](https://github.com/Vadiok/StyleSheetReloader/archive/master.zip)
 
 ## Usage
 ```js
