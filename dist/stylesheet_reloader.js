@@ -1,2 +1,84 @@
-(function(){var e={}.hasOwnProperty;window.StyleSheetReloader=function(t){var r,n,o,l,i;r={cssUrl:!1,hotKey:"alt+r"},"string"==typeof t&&(t={cssUrl:t}),"object"!=typeof t&&(t={});for(l in r)e.call(r,l)&&(o=r[l],t[l]||(t[l]=r[l]));return i=function(e){var t,r,n,o,l,i,s,f,c;for(f=0,s=document.querySelectorAll("link[rel=stylesheet][href]"),o=0,l=s.length;l>o;o++)i=s[o],r=i.getAttribute("href"),!r||!r.length||e&&-1===r.indexOf(e)||(r=r.split("replacedVersion")[0],n=r.substr(r.length-1),("?"===n||"&"===n)&&(r=r.substr(0,r.length-1)),c=Date.now(),t="?",-1!==r.indexOf("?")&&(t="&"),r+=t+"replacedVersion="+c,i.setAttribute("href",r),f++);return f},n=function(e,t){var r,n,o,l;for(e=e.split("+"),l=!0,r=0,o=e.length;o>r;r++)if(n=e[r],n.trim().length)if(n=n.trim().toLowerCase(),"alt"===n||"ctrl"===n||"shift"===n){if(!t[n+"Key"])return!1}else if(t.keyCode!==n.toUpperCase().charCodeAt(0))return!1;return l},document.onkeydown=function(e){return n(t.hotKey,e)?i(t.cssUrl):void 0}}}).call(this);
-//# sourceMappingURL=/stylesheet_reloader.js.map
+
+/*
+	StyleSheetReloader v 0.5
+	Author: Vlad Tokarev <vlad@tokarev.tk>
+ */
+
+(function() {
+  var hasProp = {}.hasOwnProperty;
+
+  window.StyleSheetReloader = function(options) {
+    var defaultOptions, hotKeyPressed, optionDefaultValue, optionKey, runChange;
+    defaultOptions = {
+      cssUrl: false,
+      hotKey: 'alt+r'
+    };
+    if (typeof options === 'string') {
+      options = {
+        cssUrl: options
+      };
+    }
+    if (typeof options !== 'object') {
+      options = {};
+    }
+    for (optionKey in defaultOptions) {
+      if (!hasProp.call(defaultOptions, optionKey)) continue;
+      optionDefaultValue = defaultOptions[optionKey];
+      if (!options[optionKey]) {
+        options[optionKey] = defaultOptions[optionKey];
+      }
+    }
+    runChange = function(cssUrl) {
+      var addParameter, href, hrefLastChar, i, len, link, links, replacedLinks, replacedVersion;
+      replacedLinks = 0;
+      links = document.querySelectorAll('link[rel=stylesheet][href]');
+      for (i = 0, len = links.length; i < len; i++) {
+        link = links[i];
+        href = link.getAttribute('href');
+        if (href && href.length && (!cssUrl || href.indexOf(cssUrl) !== -1)) {
+          href = href.split('replacedVersion')[0];
+          hrefLastChar = href.substr(href.length - 1);
+          if (hrefLastChar === '?' || hrefLastChar === '&') {
+            href = href.substr(0, href.length - 1);
+          }
+          replacedVersion = Date.now();
+          addParameter = '?';
+          if (href.indexOf('?') !== -1) {
+            addParameter = '&';
+          }
+          href += addParameter + 'replacedVersion=' + replacedVersion;
+          link.setAttribute('href', href);
+          replacedLinks++;
+        }
+      }
+      return replacedLinks;
+    };
+    hotKeyPressed = function(hotKey, event) {
+      var i, key, len, result;
+      hotKey = hotKey.split('+');
+      result = true;
+      for (i = 0, len = hotKey.length; i < len; i++) {
+        key = hotKey[i];
+        if (key.trim().length) {
+          key = key.trim().toLowerCase();
+          if (key === 'alt' || key === 'ctrl' || key === 'shift') {
+            if (!event[key + 'Key']) {
+              return false;
+            }
+          } else {
+            if (event.keyCode !== key.toUpperCase().charCodeAt(0)) {
+              return false;
+            }
+          }
+        }
+      }
+      return result;
+    };
+    return document.onkeydown = function(e) {
+      if (hotKeyPressed(options.hotKey, e)) {
+        return runChange(options.cssUrl);
+      }
+    };
+  };
+
+}).call(this);

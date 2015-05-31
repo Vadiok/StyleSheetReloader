@@ -18,7 +18,9 @@ gulp.task('build', function () {
 		.pipe(gp.rigger())
 		.pipe(gp.sourcemaps.init())
 		.pipe(gp.coffee())
+		.pipe(gulp.dest(path.build))
 		.pipe(gp.uglify())
+		.pipe(gp.rename({extname:'.min.js'}))
 		.pipe(gp.sourcemaps.write('/'))
 		.pipe(gulp.dest(path.build))
 });
@@ -35,4 +37,4 @@ gulp.task('clean', function() {
 	clean(path.build);
 });
 
-gulp.task('default', gp.sequence(['clean','build','watch']) );
+gulp.task('default', gp.sequence('clean',['build','watch']) );

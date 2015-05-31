@@ -8,11 +8,16 @@
 	},
 	"author": "Vlad Tokarev <vlad@tokarev.tk>",
 	"license": "GPL-3.0+",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/Vadiok/StyleSheetReloader.git"
+	},
 	"devDependencies": {
 		"gulp": "*"
 		,"gulp-load-plugins": "*"
 		,"gulp-connect": "*"
 		,"gulp-open": "*"
+		,"gulp-rename": "*"
 		,"gulp-sequence": "*"
 		,"gulp-watch": "*"
 		,"del": "*"
