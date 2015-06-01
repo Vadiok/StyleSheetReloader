@@ -1,7 +1,7 @@
 
-/*
-	StyleSheetReloader v 0.5
-	Author: Vlad Tokarev <vlad@tokarev.tk>
+/**
+ * StyleSheetReloader v 1.0
+ * Author: Vlad Tokarev <vlad@tokarev.tk>
  */
 
 (function() {
@@ -80,5 +80,19 @@
       }
     };
   };
+
+  window.StyleSheetReloader.runByTagParams = function() {
+    var i, len, options, results, script, scripts;
+    scripts = document.querySelectorAll('script[data-stylesheetReloader]');
+    results = [];
+    for (i = 0, len = scripts.length; i < len; i++) {
+      script = scripts[i];
+      options = script.getAttribute('data-stylesheetReloader');
+      results.push(window.StyleSheetReloader(options));
+    }
+    return results;
+  };
+
+  window.StyleSheetReloader.runByTagParams();
 
 }).call(this);

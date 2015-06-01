@@ -1,6 +1,6 @@
-###
-	StyleSheetReloader v 0.5
-	Author: Vlad Tokarev <vlad@tokarev.tk>
+###*
+ * StyleSheetReloader v 1.0
+ * Author: Vlad Tokarev <vlad@tokarev.tk>
 ###
 window.StyleSheetReloader = (options)->
 	defaultOptions = {
@@ -31,7 +31,7 @@ window.StyleSheetReloader = (options)->
 				addParameter = '?'
 				if href.indexOf('?')!=-1
 					addParameter = '&'
-				href+= addParameter + 'replacedVersion=' + replacedVersion;
+				href+= addParameter + 'replacedVersion=' + replacedVersion
 				link.setAttribute('href',href)
 				replacedLinks++
 		return replacedLinks
@@ -53,3 +53,13 @@ window.StyleSheetReloader = (options)->
 	document.onkeydown = (e)->
 		if hotKeyPressed(options.hotKey,e)
 			runChange(options.cssUrl)
+
+# Searching for running by tag parameters
+window.StyleSheetReloader.runByTagParams = ()->
+	scripts = document.querySelectorAll('script[data-stylesheetReloader]')
+	# preventing of several times running
+	for script in scripts
+		options = script.getAttribute('data-stylesheetReloader')
+		window.StyleSheetReloader(options)
+
+window.StyleSheetReloader.runByTagParams()
