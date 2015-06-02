@@ -82,12 +82,18 @@
   };
 
   window.StyleSheetReloader.runByTagParams = function() {
-    var i, len, options, results, script, scripts;
+    var error, i, json, len, options, results, script, scripts;
     scripts = document.querySelectorAll('script[data-stylesheetReloader]');
     results = [];
     for (i = 0, len = scripts.length; i < len; i++) {
       script = scripts[i];
       options = script.getAttribute('data-stylesheetReloader');
+      try {
+        json = JSON.parse(options);
+        options = json;
+      } catch (_error) {
+        error = _error;
+      }
       results.push(window.StyleSheetReloader(options));
     }
     return results;

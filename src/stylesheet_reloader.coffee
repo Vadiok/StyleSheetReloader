@@ -60,6 +60,10 @@ window.StyleSheetReloader.runByTagParams = ()->
 	# preventing of several times running
 	for script in scripts
 		options = script.getAttribute('data-stylesheetReloader')
+		try
+			json = JSON.parse(options)
+			options = json
+		catch error
 		window.StyleSheetReloader(options)
 
 window.StyleSheetReloader.runByTagParams()
