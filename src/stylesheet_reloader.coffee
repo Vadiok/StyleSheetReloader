@@ -49,21 +49,22 @@ window.StyleSheetReloader = (options)->
 					if event.keyCode != key.toUpperCase().charCodeAt(0)
 						return false
 		return result
-	# Listening key pressed event
-	document.onkeydown = (e)->
+	# Adds key pressed event listener
+	document.addEventListener('keydown', (e)->
 		if hotKeyPressed(options.hotKey,e)
 			runChange(options.cssUrl)
+	)
 
 # Searching for running by tag parameters
 window.StyleSheetReloader.runByTagParams = ()->
 	scripts = document.querySelectorAll('script[data-stylesheetReloader]')
-	# preventing of several times running
 	for script in scripts
 		options = script.getAttribute('data-stylesheetReloader')
 		try
 			json = JSON.parse(options)
 			options = json
 		catch error
+			console.log(error)
 		window.StyleSheetReloader(options)
 
 window.StyleSheetReloader.runByTagParams()

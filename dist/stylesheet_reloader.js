@@ -74,11 +74,11 @@
       }
       return result;
     };
-    return document.onkeydown = function(e) {
+    return document.addEventListener('keydown', function(e) {
       if (hotKeyPressed(options.hotKey, e)) {
         return runChange(options.cssUrl);
       }
-    };
+    });
   };
 
   window.StyleSheetReloader.runByTagParams = function() {
@@ -93,6 +93,7 @@
         options = json;
       } catch (_error) {
         error = _error;
+        console.log(error);
       }
       results.push(window.StyleSheetReloader(options));
     }

@@ -34,5 +34,5 @@ StyleSheetReloader({'cssUrl':'style2.css',hotKey:'alt+2'});
 
 Or you can call function by passing to ``script`` tag ``data-stylesheetReloader`` parameter with options in its value (options are optional and the same as uses in js function call)
 ```html
-<script src="some_path/dist/stylesheet_reloader.min.js" data-stylesheetReloader="{hotKey:'alt+e'}" type="text/javascript"></script>
+<script src="some_path/dist/stylesheet_reloader.min.js" data-stylesheetReloader='{"hotKey":"alt+e"}' type="text/javascript"></script>
 ```
