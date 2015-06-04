@@ -8,51 +8,8 @@
   var hasProp = {}.hasOwnProperty;
 
   window.StyleSheetReloader = function(options) {
-    var defaultOptions, hotKeyPressed, optionDefaultValue, optionKey, runChange;
-    defaultOptions = {
-      cssUrl: false,
-      hotKey: 'alt+r'
-    };
-    if (typeof options === 'string') {
-      options = {
-        cssUrl: options
-      };
-    }
-    if (typeof options !== 'object') {
-      options = {};
-    }
-    for (optionKey in defaultOptions) {
-      if (!hasProp.call(defaultOptions, optionKey)) continue;
-      optionDefaultValue = defaultOptions[optionKey];
-      if (!options[optionKey]) {
-        options[optionKey] = defaultOptions[optionKey];
-      }
-    }
-    runChange = function(cssUrl) {
-      var addParameter, href, hrefLastChar, i, len, link, links, replacedLinks, replacedVersion;
-      replacedLinks = 0;
-      links = document.querySelectorAll('link[rel=stylesheet][href]');
-      for (i = 0, len = links.length; i < len; i++) {
-        link = links[i];
-        href = link.getAttribute('href');
-        if (href && href.length && (!cssUrl || href.indexOf(cssUrl) !== -1)) {
-          href = href.split('replacedVersion')[0];
-          hrefLastChar = href.substr(href.length - 1);
-          if (hrefLastChar === '?' || hrefLastChar === '&') {
-            href = href.substr(0, href.length - 1);
-          }
-          replacedVersion = Date.now();
-          addParameter = '?';
-          if (href.indexOf('?') !== -1) {
-            addParameter = '&';
-          }
-          href += addParameter + 'replacedVersion=' + replacedVersion;
-          link.setAttribute('href', href);
-          replacedLinks++;
-        }
-      }
-      return replacedLinks;
-    };
+    var hotKeyPressed;
+    options = window.StyleSheetReloader.prepareOptions(options);
     hotKeyPressed = function(hotKey, event) {
       var i, key, len, result;
       hotKey = hotKey.split('+');
@@ -76,18 +33,24 @@
     };
     return document.addEventListener('keydown', function(e) {
       if (hotKeyPressed(options.hotKey, e)) {
-        return runChange(options.cssUrl);
+        return window.StyleSheetReloader.reload(options.cssUrl);
       }
     });
   };
 
-  window.StyleSheetReloader.runByTagParams = function() {
-    var error, i, json, len, options, results, script, scripts;
-    scripts = document.querySelectorAll('script[data-stylesheetReloader]');
-    results = [];
-    for (i = 0, len = scripts.length; i < len; i++) {
-      script = scripts[i];
-      options = script.getAttribute('data-stylesheetReloader');
+  window.StyleSheetReloader.prepareOptions = function(options, parseJson) {
+    var defaultOptions, error, json, optionDefaultValue, optionKey;
+    if (options == null) {
+      options = false;
+    }
+    if (parseJson == null) {
+      parseJson = false;
+    }
+    defaultOptions = {
+      cssUrl: false,
+      hotKey: 'alt+r'
+    };
+    if (parseJson && options && options.length) {
       try {
         json = JSON.parse(options);
         options = json;
@@ -95,6 +58,67 @@
         error = _error;
         console.log(error);
       }
+    }
+    if (typeof options === 'string') {
+      options = {
+        cssUrl: options
+      };
+    }
+    if (typeof options !== 'object') {
+      options = {};
+    }
+    for (optionKey in defaultOptions) {
+      if (!hasProp.call(defaultOptions, optionKey)) continue;
+      optionDefaultValue = defaultOptions[optionKey];
+      if (!options[optionKey]) {
+        options[optionKey] = defaultOptions[optionKey];
+      }
+    }
+    if (options.cssUrl && !options.cssUrl.length) {
+      options.cssUrl = false;
+    }
+    return options;
+  };
+
+  window.StyleSheetReloader.reload = function(cssUrl) {
+    var addParameter, href, hrefLastChar, i, len, link, links, replacedLinks, replacedVersion;
+    if (cssUrl == null) {
+      cssUrl = false;
+    }
+    replacedLinks = 0;
+    if (typeof cssUrl === 'string' && !cssUrl.length) {
+      cssUrl = false;
+    }
+    links = document.querySelectorAll('link[rel=stylesheet][href]');
+    for (i = 0, len = links.length; i < len; i++) {
+      link = links[i];
+      href = link.getAttribute('href');
+      if (href && href.length && (!cssUrl || href.indexOf(cssUrl) !== -1)) {
+        href = href.split('replacedVersion')[0];
+        hrefLastChar = href.substr(href.length - 1);
+        if (hrefLastChar === '?' || hrefLastChar === '&') {
+          href = href.substr(0, href.length - 1);
+        }
+        replacedVersion = Date.now();
+        addParameter = '?';
+        if (href.indexOf('?') !== -1) {
+          addParameter = '&';
+        }
+        href += addParameter + 'replacedVersion=' + replacedVersion;
+        link.setAttribute('href', href);
+        replacedLinks++;
+      }
+    }
+    return replacedLinks;
+  };
+
+  window.StyleSheetReloader.runByTagParams = function() {
+    var i, len, options, results, script, scripts;
+    scripts = document.querySelectorAll('script[data-stylesheetReloader]');
+    results = [];
+    for (i = 0, len = scripts.length; i < len; i++) {
+      script = scripts[i];
+      options = window.StyleSheetReloader.prepareOptions(script.getAttribute('data-stylesheetReloader'), true);
       results.push(window.StyleSheetReloader(options));
     }
     return results;
