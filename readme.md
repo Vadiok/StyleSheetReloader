@@ -1,5 +1,5 @@
 # StyleSheetReloader
-Simple JavaScript function uses to refresh CSS styles without page reloading.
+Simple JavaScript function uses to refresh CSS styles without page reloading. Supports refreshing by HotKeys or by running function on event (for example ``onclick``).
 
 ## Installation
 By Bower usage:
@@ -34,5 +34,10 @@ StyleSheetReloader({'cssUrl':'style2.css',hotKey:'alt+2'});
 
 Or you can call function by passing to ``script`` tag ``data-stylesheetReloader`` parameter with options in its value (options are optional and the same as uses in js function call)
 ```html
-<script src="some_path/dist/stylesheet_reloader.min.js" data-stylesheetReloader='{"hotKey":"alt+e"}' type="text/javascript"></script>
+<script src="https://cdn.rawgit.com/Vadiok/StyleSheetReloader/057bdf2c0858e23e93f57361fb42ae6ac94e5cea/dist/stylesheet_reloader.min.js" data-stylesheetReloader='{"hotKey":"alt+e"}' type="text/javascript"></script>
+```
+
+If you want to add some link or button which will refresh styles on its click you can do something like this
+```html
+<a href="#" onclick="StyleSheetReloader.reload(); return false;">Click to reload CSS!</a>
 ```
