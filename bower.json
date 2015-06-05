@@ -4,11 +4,16 @@
 	"authors": [
 		"Vlad Tokarev <vlad@tokarev.tk>"
 	],
+	"description": "Simple JavaScript function uses to refresh CSS styles without page reloading.",
+	"main": "src/stylesheet_reloader.coffee",
+	"keywords": ["css","stylesheet","refresh","reload","update","style"],
 	"license": "GPL-3.0+",
+	"homepage": "https://github.com/Vadiok/StyleSheetReloader",
 	"ignore": [
 		"**/.*",
 		"node_modules",
 		"bower_components",
+		"vendors",
 		"test",
 		"tests"
 	],
