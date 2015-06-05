@@ -1,14 +1,22 @@
 {
 	"name": "StyleSheetReloader",
+	"homepage": "https://github.com/Vadiok/StyleSheetReloader",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/Vadiok/StyleSheetReloader.git"
+	},
 	"version": "1.0.0",
 	"authors": [
 		"Vlad Tokarev <vlad@tokarev.tk>"
 	],
 	"description": "Simple JavaScript function uses to refresh CSS styles without page reloading.",
-	"main": "src/stylesheet_reloader.coffee",
-	"keywords": ["css","stylesheet","refresh","reload","update","style"],
+	"main": [
+		"./dist/stylesheet_reloader.js",
+		"./dist/stylesheet_reloader.min.js"
+	],
+	"moduleType": "globals",
+	"keywords": ["stylesheetreloader","style-sheet-reloader","stylesheet-reloader","css","stylesheet","refresh","reload","update","style"],
 	"license": "GPL-3.0+",
-	"homepage": "https://github.com/Vadiok/StyleSheetReloader",
 	"ignore": [
 		"**/.*",
 		"node_modules",
