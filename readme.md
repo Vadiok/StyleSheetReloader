@@ -4,7 +4,7 @@ Simple JavaScript function uses to refresh CSS styles without page reloading. Su
 ## Installation
 By Bower usage:
 ```
-bower i git://github.com/Vadiok/StyleSheetReloader.git
+bower i stylesheet-reloader
 ```
 By simple downloading of [zip archive](https://github.com/Vadiok/StyleSheetReloader/archive/master.zip)
 
