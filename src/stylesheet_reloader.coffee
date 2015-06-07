@@ -78,4 +78,25 @@ window.StyleSheetReloader.runByTagParams = ()->
 		options = window.StyleSheetReloader.prepareOptions(script.getAttribute('data-stylesheetReloader'),true)
 		window.StyleSheetReloader(options)
 
+# Get modification time response from server
+window.StyleSheetReloader.getLastModificationTime = (url)->
+	request = new XMLHttpRequest()
+	request.open('HEAD',url, false)
+	request.send(null)
+	if request.readyState<3
+		console.log("Server doesn't ready to answer")
+		return false
+	if !request
+		console.log("XMLHttpRequest doesn't supported by your browser")
+		return false
+	lastModified = request.getResponseHeader('Last-Modified')
+	if !lastModified
+		console.log("Can't receive \"Last-Modified\" header from server")
+		return false
+	lastTS = Date.parse(lastModified).getUnixTime()
+	if !lastTS
+		console.log("\"Last-Modified\" answer isn't correct")
+		return false
+	return lastTS
+
 window.StyleSheetReloader.runByTagParams()
