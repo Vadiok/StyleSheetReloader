@@ -1,6 +1,6 @@
 {
 	"name": "StyleSheetReloader",
-	"version": "1.0.0",
+	"version": "1.5.0",
 	"description": "Simple JavaScript function uses to refresh CSS styles without page reloading",
 	"main": "index.js",
 	"scripts": {

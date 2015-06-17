@@ -1,5 +1,5 @@
 ###*
- * StyleSheetReloader v 1.0
+ * StyleSheetReloader v 1.5
  * Author: Vlad Tokarev <vlad@tokarev.tk>
 ###
 window.StyleSheetReloader = (options)->
@@ -78,11 +78,39 @@ window.StyleSheetReloader.runByTagParams = ()->
 		options = window.StyleSheetReloader.prepareOptions(script.getAttribute('data-stylesheetReloader'),true)
 		window.StyleSheetReloader(options)
 
+# Running Live Reloading
+window.StyleSheetReloader.listen = (url=false, period=1000)->
+	if typeof url is 'string' && !url.length
+		url = false
+	if !url
+		url = {}
+		links = document.querySelectorAll('link[rel=stylesheet][href]')
+		for link in links
+			href = link.getAttribute('href')
+			if href && href.length
+				url[href] = 0
+	if typeof url is 'string'
+		urlString = url
+		url = {}
+		url[urlString] = 0
+	reloadIfRequired = ()->
+		for own urlLink,urlLastMod of url
+			lm = window.StyleSheetReloader.getLastModificationTime(urlLink)
+			if urlLastMod != lm
+				url[urlLink] = lm
+				window.StyleSheetReloader.reload(urlLink)
+	setInterval(reloadIfRequired,period)
+	return period
+
 # Get modification time response from server
 window.StyleSheetReloader.getLastModificationTime = (url)->
 	request = new XMLHttpRequest()
-	request.open('HEAD',url, false)
-	request.send(null)
+	try
+		request.open('HEAD',url, false)
+		request.send(null)
+	catch error
+		console.log(error)
+		return false
 	if request.readyState<3
 		console.log("Server doesn't ready to answer")
 		return false
@@ -93,10 +121,6 @@ window.StyleSheetReloader.getLastModificationTime = (url)->
 	if !lastModified
 		console.log("Can't receive \"Last-Modified\" header from server")
 		return false
-	lastTS = Date.parse(lastModified).getUnixTime()
-	if !lastTS
-		console.log("\"Last-Modified\" answer isn't correct")
-		return false
-	return lastTS
+	return lastModified
 
 window.StyleSheetReloader.runByTagParams()

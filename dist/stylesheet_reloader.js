@@ -1,6 +1,6 @@
 
 /**
- * StyleSheetReloader v 1.0
+ * StyleSheetReloader v 1.5
  * Author: Vlad Tokarev <vlad@tokarev.tk>
  */
 
@@ -122,6 +122,80 @@
       results.push(window.StyleSheetReloader(options));
     }
     return results;
+  };
+
+  window.StyleSheetReloader.listen = function(url, period) {
+    var href, i, len, link, links, reloadIfRequired, urlString;
+    if (url == null) {
+      url = false;
+    }
+    if (period == null) {
+      period = 1000;
+    }
+    if (typeof url === 'string' && !url.length) {
+      url = false;
+    }
+    if (!url) {
+      url = {};
+      links = document.querySelectorAll('link[rel=stylesheet][href]');
+      for (i = 0, len = links.length; i < len; i++) {
+        link = links[i];
+        href = link.getAttribute('href');
+        if (href && href.length) {
+          url[href] = 0;
+        }
+      }
+    }
+    if (typeof url === 'string') {
+      urlString = url;
+      url = {};
+      url[urlString] = 0;
+    }
+    reloadIfRequired = function() {
+      var lm, results, urlLastMod, urlLink;
+      results = [];
+      for (urlLink in url) {
+        if (!hasProp.call(url, urlLink)) continue;
+        urlLastMod = url[urlLink];
+        lm = window.StyleSheetReloader.getLastModificationTime(urlLink);
+        if (urlLastMod !== lm) {
+          url[urlLink] = lm;
+          results.push(window.StyleSheetReloader.reload(urlLink));
+        } else {
+          results.push(void 0);
+        }
+      }
+      return results;
+    };
+    setInterval(reloadIfRequired, period);
+    return period;
+  };
+
+  window.StyleSheetReloader.getLastModificationTime = function(url) {
+    var error, lastModified, request;
+    request = new XMLHttpRequest();
+    try {
+      request.open('HEAD', url, false);
+      request.send(null);
+    } catch (_error) {
+      error = _error;
+      console.log(error);
+      return false;
+    }
+    if (request.readyState < 3) {
+      console.log("Server doesn't ready to answer");
+      return false;
+    }
+    if (!request) {
+      console.log("XMLHttpRequest doesn't supported by your browser");
+      return false;
+    }
+    lastModified = request.getResponseHeader('Last-Modified');
+    if (!lastModified) {
+      console.log("Can't receive \"Last-Modified\" header from server");
+      return false;
+    }
+    return lastModified;
   };
 
   window.StyleSheetReloader.runByTagParams();
