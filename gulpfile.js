@@ -33,8 +33,8 @@ gulp.task('watch', function(){
 });
 
 // Clean Build dir
-gulp.task('clean', function() {
-	clean(path.build);
+gulp.task('clean', function(cb) {
+	clean(path.build, cb);
 });
 
 gulp.task('default', gp.sequence('clean',['build','watch']) );
